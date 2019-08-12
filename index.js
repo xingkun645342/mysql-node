@@ -20,7 +20,7 @@ const scheduleCronstyle = () => {
     var rule = new schedule.RecurrenceRule();
     rule.minute = [1, 11, 21, 31, 41, 51];
     schedule.scheduleJob(rule, () => {2
-        timingTask.getData(); 
+        // timingTask.getData(); 
     });
 }
 scheduleCronstyle();
@@ -59,8 +59,12 @@ routes.post('/getList', (req, res) => {
 });
 
 routes.post('/getDetail',(req,res) => {
-    pageList.pageDetail(req.query).then(data => {
-        
+    pageList.pageDetail(req.body).then(data => {
+        res.send({
+            code: 200,
+            data
+        });
+        res.end();
     })
 })
 

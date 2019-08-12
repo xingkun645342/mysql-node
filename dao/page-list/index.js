@@ -52,6 +52,7 @@ module.exports = {
     pageDetail(obj) {
         return new Promise(resolve => {
             let sql = `SELECT detailHref from pipinews WHERE id=${obj.id}`;
+            console.log('获取段子详情数据sql:',sql)
             var connection = mysql.createConnection(mysqlConfig);
             connection.connect(function (err) {
                 if (err) {
@@ -80,7 +81,22 @@ module.exports = {
                                 //video 视频
                                 //word 纯文字
                                 //image 单图
-                                console.log($('.detail-wrapper .detail').find('.content-text').hasClass('video'))
+                                let detail = $('.detail-wrapper .detail'), obj = {};
+                                if(detail.hasClass('multi')){
+                                    let type = 2, imgUrls = [], text = detail.find('.content-text').text();
+                                    detail.find('.content-img img').each((index, item) => {
+                                        imgUrls.push($(item).attr('src'))
+                                    });
+                                    obj = {
+                                        type,
+                                        imgUrls: imgUrls.join('^^^'),
+                                        text
+                                    }
+                                } else if (detail.hasClass('word')){
+                                    let type = 1, text = detail.find('.content-text').html();
+                                    // console.log(u.decodeUnicode(text))
+                                }
+                                resolve(obj)
                             })
                         })
                     }
