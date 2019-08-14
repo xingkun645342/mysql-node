@@ -31,30 +31,12 @@ module.exports = {
         });
         return result;
     },
-    // 转为unicode 编码  
-    encodeUnicode(str) {
-
-        var unid = '\\u';
-
-        for (let i = 0, len = str.length; i < len; i++) {
-
-            if (i < len - 1) {
-
-                unid += str.charCodeAt(i).toString(16) + '\\u';
-
-            } else if (i === len - 1) {
-
-                unid += str.charCodeAt(i).toString(16);
-
-            }
-
-        }
-
-        return unid;
-
+    //utf8转中文
+    utf8Change(pValue) {
+        return pValue.replace(/[^\u0000-\u00FF]/g, function ($0) { return escape($0).replace(/(%u)(\w{4})/gi, "&#x$2;") });
     },
-    // 解码  
-    decodeUnicode(str) {
-        return unescape(str.replace(/\\u/gi, '%u'))
+    //中文转utf8
+    utf8ReChange(pValue) {
+        return unescape(pValue.replace(/&#x/g, '%u').replace(/\\u/g, '%u').replace(/;/g, ''));
     }
 }

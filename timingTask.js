@@ -57,18 +57,19 @@ module.exports = {
                     if (text.length == 0) return;
                     let i = text.indexOf('\\');
                     let t = i > -1 ? text.substring(0, i) : text;
-                    // console.log(u.utf16toEntities(t))
+                    let href = $(item).find('.content').attr('href');
+                    if(href.indexOf('undefined') > -1) return;
                     result.data.push({
                         text: u.utf16toEntities(t),
                         imgHref: img.join('^^^'),
-                        detailHref: 'https://www.qiushibaike.com' + $(item).find('.content').attr('href'),
+                        detailHref: 'https://www.qiushibaike.com' + href,
                         createTime: new Date().toLocaleString(),
                         type,
                         imgType,
                         tag
                     });
                 });
-                var sql = `INSERT INTO pipinews(text,imgHref,detailHref,createTime,type,imgType,tag) VALUES ?`;
+                var sql = `INSERT INTO ${mysqlConfig.dev ? 'pipinews_test' : 'pipinews'}(text,imgHref,detailHref,createTime,type,imgType,tag) VALUES ?`;
                 var connection = mysql.createConnection(mysqlConfig);
                 connection.connect(function (err) {
                     if (err) {

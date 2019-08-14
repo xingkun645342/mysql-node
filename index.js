@@ -15,6 +15,7 @@ var routes = express.Router();
 const schedule = require('node-schedule');
 let timingTask = require('./timingTask.js');
 let pageList = require('./dao/page-list/index.js');
+var mysqlConfig = require('./mysqlConfig.js');
 
 const scheduleCronstyle = () => {
     var rule = new schedule.RecurrenceRule();
@@ -23,7 +24,7 @@ const scheduleCronstyle = () => {
         // timingTask.getData(); 
     });
 }
-scheduleCronstyle();
+mysqlConfig.dev ? timingTask.getData() : scheduleCronstyle();
 
 app.use(bodyparser.urlencoded({
     extended: true
@@ -65,7 +66,7 @@ routes.post('/getDetail',(req,res) => {
             data
         });
         res.end();
-    })
+    }).catch(err => console.log(err))
 })
 
 app.use('/', routes);

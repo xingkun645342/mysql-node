@@ -3,5 +3,6 @@ module.exports = {
     user: "root",
     password: "Xing645342",
     database: "news",
-    port: 3306
+    port: 3306,
+    dev: false
 }
